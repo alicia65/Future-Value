@@ -21,5 +21,29 @@ namespace Future_Value
         {
 
         }
+
+        private void btnCalculate_Click(object sender, EventArgs e)
+        {
+            decimal monthlyInvestment = Convert.ToDecimal(txtMonthlyInvestment.Text);//declare monthly investment variable and ToDecimal() method converts string to decimal number.
+            decimal yearlyInterestRate = Convert.ToDecimal(txtInterestRate.Text);
+            int years = Convert.ToInt32(txtYears.Text);
+
+            int months = years * 12;// calculate year by 12 and store this value in months variable
+            decimal monthlyInterestRate = yearlyInterestRate / 12 / 100;
+
+            decimal futureValue = 0m;
+            for(int i = 0; i < months; i++)//generating new futureValue by looping through each month
+            {
+                futureValue = (futureValue + monthlyInvestment) * (1 + monthlyInterestRate);
+            }
+
+            txtFutureValue.Text = futureValue.ToString("c");
+            txtMonthlyInvestment.Focus();
+        }
+
+        private void btnExit_Click(object sender, EventArgs e)
+        {
+            this.Close();//end program
+        }
     }
-}
+};
