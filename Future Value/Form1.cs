@@ -24,17 +24,24 @@ namespace Future_Value
 
         private void btnCalculate_Click(object sender, EventArgs e)
         {
-            decimal monthlyInvestment = Convert.ToDecimal(txtMonthlyInvestment.Text);//declare monthly investment variable and ToDecimal() method converts string to decimal number.
-            decimal yearlyInterestRate = Convert.ToDecimal(txtInterestRate.Text);
-            int years = Convert.ToInt32(txtYears.Text);
+            try //prevent errors and informs users to enter proper data
+            {
+                decimal monthlyInvestment = Convert.ToDecimal(txtMonthlyInvestment.Text);//declare monthly investment variable and ToDecimal() method converts string to decimal number.
+                decimal yearlyInterestRate = Convert.ToDecimal(txtInterestRate.Text);
+                int years = Convert.ToInt32(txtYears.Text);
 
-            int months = years * 12;// calculate year by 12 and store this value in months variable
-            decimal monthlyInterestRate = yearlyInterestRate / 12 / 100;
+                int months = years * 12;// calculate year by 12 and store this value in months variable
+                decimal monthlyInterestRate = yearlyInterestRate / 12 / 100;
 
-            decimal futureValue = CalculateFutureValue(monthlyInvestment, months, monthlyInterestRate);
+                decimal futureValue = CalculateFutureValue(monthlyInvestment, months, monthlyInterestRate);
 
-            txtFutureValue.Text = futureValue.ToString("c");
-            txtMonthlyInvestment.Focus();
+                txtFutureValue.Text = futureValue.ToString("c");
+                txtMonthlyInvestment.Focus();
+            }
+            catch 
+            {
+                MessageBox.Show("Please enter a valid number for the monthly investment field.", "Entry Error");
+            }
         }
 
         private static decimal CalculateFutureValue(decimal monthlyInvestment, int months, decimal monthlyInterestRate)
