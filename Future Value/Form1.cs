@@ -38,10 +38,73 @@ namespace Future_Value
                 txtFutureValue.Text = futureValue.ToString("c");
                 txtMonthlyInvestment.Focus();
             }
-            catch 
+            catch (FormatException) 
             {
-                MessageBox.Show("Please enter a valid number for the monthly investment field.", "Entry Error");
+                MessageBox.Show("Invalid numeric format. Please check all entries.", "Entry Error");
             }
+            catch (OverflowException) 
+            {
+                MessageBox.Show("An overflow exception has occurred. Please enter smaller values.", "Entry Error");
+            }
+            catch (Exception ex) 
+            {
+                MessageBox.Show(ex.Message, ex.GetType().ToString());
+                throw ex;
+            }
+            
+        }
+
+        public bool IsPresent(TextBox textBox, string name)
+        {
+            if (textBox.Text == "")
+            {
+                MessageBox.Show(name + " is a required field.", "Entry Error");
+                textBox.Focus();
+                return false;
+            }
+            return true;
+        }
+
+        public bool IsInt32(TextBox textBox, string name) 
+        {
+            int number = 0;
+            if(int.TryParse(textBox.Text, out number)) 
+            {
+                return true;
+            }
+            else 
+            {
+                MessageBox.Show(name + "must be a number.", " Entry Error");
+                textBox.Focus();
+                return false;
+            }
+        }
+        public bool IsDecimal(TextBox textBox, string name) 
+        {
+            decimal number = 0m;
+            if(Decimal.TryParse(textBox.Text, out number)) 
+            {
+                return true;
+            }
+            else 
+            {
+                MessageBox.Show(name + "must be a decimal value. ", "Entry Error");
+                textBox.Focus();
+                return false;
+            }
+        }
+
+        public bool IsWithinRange(TextBox textBox, string name, decimal min, decimal max) 
+        {
+            decimal number = Convert.ToDecimal(textBox.Text);
+            if( number < min || number > max) 
+            {
+                MessageBox.Show(name + "must be between " + min.ToString()
+                    + " and" + max.ToString() + ".", "Entry Error");
+                textBox.Focus();
+                return false;
+            }
+            return true;
         }
 
         private static decimal CalculateFutureValue(decimal monthlyInvestment, int months, decimal monthlyInterestRate)
