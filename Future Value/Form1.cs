@@ -26,19 +26,22 @@ namespace Future_Value
         {
             try //prevent errors and informs users to enter proper data
             {
-                decimal monthlyInvestment = Convert.ToDecimal(txtMonthlyInvestment.Text);//declare monthly investment variable and ToDecimal() method converts string to decimal number.
-                decimal yearlyInterestRate = Convert.ToDecimal(txtInterestRate.Text);
-                int years = Convert.ToInt32(txtYears.Text);
+                if (IsValidData())
+                {
+                    decimal monthlyInvestment = Convert.ToDecimal(txtMonthlyInvestment.Text);//declare monthly investment variable and ToDecimal() method converts string to decimal number.
+                    decimal yearlyInterestRate = Convert.ToDecimal(txtInterestRate.Text);
+                    int years = Convert.ToInt32(txtYears.Text);
 
-                int months = years * 12;// calculate year by 12 and store this value in months variable
-                decimal monthlyInterestRate = yearlyInterestRate / 12 / 100;
+                    int months = years * 12;// calculate year by 12 and store this value in months variable
+                    decimal monthlyInterestRate = yearlyInterestRate / 12 / 100;
 
-                decimal futureValue = CalculateFutureValue(monthlyInvestment, months, monthlyInterestRate);
+                    decimal futureValue = CalculateFutureValue(monthlyInvestment, months, monthlyInterestRate);
 
-                txtFutureValue.Text = futureValue.ToString("c");
-                txtMonthlyInvestment.Focus();
+                    txtFutureValue.Text = futureValue.ToString("c");
+                    txtMonthlyInvestment.Focus();
+                }  
             }
-            catch (FormatException) 
+            /*catch (FormatException) 
             {
                 MessageBox.Show("Invalid numeric format. Please check all entries.", "Entry Error");
             }
@@ -46,6 +49,7 @@ namespace Future_Value
             {
                 MessageBox.Show("An overflow exception has occurred. Please enter smaller values.", "Entry Error");
             }
+            */
             catch (Exception ex) 
             {
                 MessageBox.Show(ex.Message, ex.GetType().ToString());
@@ -104,6 +108,26 @@ namespace Future_Value
                 textBox.Focus();
                 return false;
             }
+            return true;
+        }
+
+        public bool IsValidData() 
+        {
+            // Validate the Monthly Investment text box
+            if (!IsPresent(txtMonthlyInvestment, "Monthly Investment"))
+                return false;
+            if(!IsDecimal(txtMonthlyInvestment, "Monthly Investment"))
+                return false;
+            if (!IsWithinRange(txtMonthlyInvestment, "Monthly Investment", 1, 20))
+                return false;
+
+            // Validate the Interest Rate text box
+            if (!IsPresent(txtInterestRate, "Interest Rate"))
+                return false;
+            if (!IsDecimal(txtInterestRate, "Interest Rate"))
+                return false;
+            if (!IsWithinRange(txtInterestRate, "Interest Rate", 1, 20))
+                return false;
             return true;
         }
 
